@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import {
   GetHistory,
   GetAddress,
-  DeleteHistory,
+  PutHistory,
   PostHotel,
 } from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
@@ -21,7 +21,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Loading from "../loading/Loading";
-
 
 function IncognitoCmt(props) {
   const dispatch = useDispatch();
@@ -39,7 +38,7 @@ function IncognitoCmt(props) {
     category_id: "",
     name: "",
     background_image: "",
-    file:''
+    file: "",
   });
 
   const columns = [
@@ -92,18 +91,19 @@ function IncognitoCmt(props) {
       editable: true,
       headerAlign: "left",
       renderCell: (row) => {
-        // console.log("row",row.row)
+        console.log("row", row.row);
         return (
           <div style={{ display: "flex", gap: "10px" }}>
-            {/* <Link to={`${row.row.id}`}>
-              <button className="btn btn-primary">View</button>
-            </Link> */}
-            <button
-              onClick={() => hanldeDelete(row.row.id)}
-              className="btn btn-danger"
-            >
-              Delete
-            </button>
+            {row.row.status === 1 ? (
+              <p>Đã xác nhận</p>
+            ) : (
+              <button
+                onClick={() => hanldeConfirm(row.row)}
+                className="btn btn-danger"
+              >
+                Xác nhận
+              </button>
+            )}
           </div>
         );
       },
@@ -173,13 +173,19 @@ function IncognitoCmt(props) {
   //     setActive(!active);
   //   }
   // };
-  const hanldeDelete = async (url) => {
-    console.log("url", url);
+  const hanldeConfirm = async (value) => {
+    console.log("value", value);
     setLoading(true);
     try {
       await dispatch(
-        DeleteHistory({
-          id: url,
+        PutHistory({
+          id: value.id,
+          id_tour: value.id_tour,
+          name_register: value.name_register,
+          address_register: value.address_register,
+          phone_register: value.phone_register,
+          email_register: value.email_register,
+          status: 1,
           token,
         })
       ).then((res) => {
@@ -195,15 +201,21 @@ function IncognitoCmt(props) {
   console.log("valuesend", valueSend);
   return (
     <Container>
-      <div>
-        <h3>Lịch sử tour  </h3>
-        <div className="grid__main">
-          <CustomGrid data={data}
+      {loading ? (
+        <Loading />
+      ) : (
+        <div>
+          <h3>Lịch sử tour </h3>
+          <div className="grid__main">
+            <CustomGrid
+              data={data}
               changeCols={columns}
               path={"incognito-comments"}
-              editId={true} />
+              editId={true}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </Container>
   );
 }

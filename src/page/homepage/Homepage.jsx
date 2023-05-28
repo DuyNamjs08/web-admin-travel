@@ -37,37 +37,47 @@ function Homepage(props) {
       <div>
         <h3 className="mb-3">Thống kê doanh số </h3>
         <div className="card__main">
-          <div className="card__item" style={{borderLeft:'5px solid #4e73df'}}>
+          <div
+            className="card__item"
+            style={{ borderLeft: "5px solid #4e73df" }}
+          >
             <div className="main">
-              <ProgessBar data={data?.resultObj?.totalPrice} />
+              {/* <ProgessBar data={data?.resultObj?.totalPrice} /> */}
+              <h4>
+                <b>Total</b>: {data?.resultObj?.totalPrice || 0}
+              </h4>
             </div>
             <div className="title">
               <h5>Tổng giá</h5>
-              <div>
-                <b>Total</b>: {data?.resultObj?.totalPrice || 0}
-              </div>
             </div>
           </div>
-          <div className="card__item" style={{borderLeft:'5px solid #1cc88a'}}>
+          <div
+            className="card__item"
+            style={{ borderLeft: "5px solid #1cc88a" }}
+          >
             <div className="main">
-              <ProgessBar data={data?.resultObj?.totalRegister} />
+              {/* <ProgessBar data={data?.resultObj?.totalRegister} /> */}
+              <h4>
+                <b>Total</b>: {data?.resultObj?.totalRegister || 0}
+              </h4>
             </div>
             <div className="title">
               <h5>Tổng đăng kí</h5>
-              <div>
-                <b>Total</b>: {data?.resultObj?.totalRegister || 0}
-              </div>
             </div>
           </div>
-          <div className="card__item" style={{borderLeft:'5px solid #f6c23e '}}>
+          <div
+            className="card__item"
+            style={{ borderLeft: "5px solid #f6c23e " }}
+          >
             <div className="main">
-              <ProgessBar data={data?.resultObj?.totalTour} />
+              {/* <ProgessBar data={data?.resultObj?.totalTour} /> */}
+              <h4>
+                <b>Total</b>: {data?.resultObj?.totalTour || 0}
+              </h4>
             </div>
             <div className="title">
               <h5>Tổng tour</h5>
-              <div>
-                <b>Total</b>: {data?.resultObj?.totalTour || 0}
-              </div>
+              
             </div>
           </div>
         </div>
@@ -121,9 +131,9 @@ const Container = styled.div`
         flex: 2;
         display: flex;
         justify-content: center;
-        align-items: center;
+        /* align-items: center; */
         border-right: 1px solid #ccc;
-        padding: 10px;
+        padding: 40px 10px 10px;
       }
       .title {
         flex: 1;

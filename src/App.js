@@ -8,18 +8,19 @@ import { ToastContainer } from 'react-toastify';
 
 function App() {
   const token = localStorage.getItem("token")
+  console.log('token', token)
   const role = localStorage.getItem("role")
   const AuthAccount = ({ children }) => {
     // console.log('hello')
-    // return token ? children : <Navigate to='/login' />
-    return children
+    return token ? children : <Navigate to='/login' />
+    // return children
   }
   return (
     <>
       <Routes>
         <Route path="register" element={<Pages.Register />} />
         <Route path="login" element={<Pages.Login />} />
-        <Route path="/" element={<Layout><Pages.Homepage /></Layout>} />
+        <Route path="/" element={<AuthAccount><Layout><Pages.Homepage /></Layout></AuthAccount>} />
         {
           RouterWeb.map(item => {
             if (!item.child) {

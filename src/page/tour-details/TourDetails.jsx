@@ -92,6 +92,8 @@ function TourDetails(props) {
   };
 
   const handleSubmit = async () => {
+    console.log('listImg' ,  Array.from(valueSend.listImg))
+    console.log('file' , valueSend.file)
     if (
       !valueSend.category_id ||
       !valueSend.file ||

@@ -4,7 +4,7 @@ import {
     API_LOGIN, API_REGISTER, API_SERVICE, API_ACCOUNT, API_DOCTORS,
     API_PATIENTS, API_SERVICE_DETAIL, API_BILLS, API_PATIENTS_SERVICE,
     API_ADDRESS, API_DASHBOARD, API_TOUR, API_BLOG, API_USER, API_ROLE, API_HOTEL, API_HOTEL_IMGS,
-     API_TOUR_IMGS, API_HISTORY_TOUR, API_CONTACT ,API_COMMENT , API_BLOG_IMGS
+     API_TOUR_IMGS, API_HISTORY_TOUR, API_CONTACT ,API_COMMENT , API_BLOG_IMGS, API_CONFIRM
 } from '../api'
 
 
@@ -580,11 +580,14 @@ export const PostTours = createAsyncThunk('post/tours', async (payload) => {
     return response.data
 })
 export const PostTourImg = createAsyncThunk('post/tours', async (payload) => {
-    const arr = []
-    arr.push(payload.RoleIds)
+    // const arr = []
+    // arr.push(payload.RoleIds)
     const formData = new FormData();
+    Array.from(payload.img_src).forEach((file, index) => {
+        formData.append(`img_src`, file);
+      });
     formData.append('type_id', payload.id);
-    formData.append('img_src', payload.img_src);
+    // formData.append('img_src', payload.img_src);
     formData.append('type', payload.type);
     const response = await axios.post(API_TOUR_IMGS, formData, {
         headers: {
@@ -607,7 +610,7 @@ export const DeleteTour = createAsyncThunk('delete/tour', async (payload) => {
 })
 // ======================= Blog
 export const Getblog = createAsyncThunk('get/blog', async (payload) => {
-    const response = await axios.get(API_BLOG, {
+    const response = await axios.get(API_BLOG  + '?ItemsPerPage=100', {
         headers: {
             'Content-Type': 'multipart/form-data',
             "Authorization": `Bearer ${payload.token}`
@@ -671,8 +674,11 @@ export const PostBlogImg = createAsyncThunk('post/tours', async (payload) => {
     const arr = []
     arr.push(payload.RoleIds)
     const formData = new FormData();
+    Array.from(payload.img_src).forEach((file, index) => {
+        formData.append(`img_src`, file);
+      });
     formData.append('type_id', payload.id);
-    formData.append('img_src', payload.img_src);
+    // formData.append('img_src', payload.img_src);
     formData.append('type', payload.type);
     const response = await axios.post(API_BLOG_IMGS, formData, {
         headers: {
@@ -835,8 +841,11 @@ export const PostHotelImg = createAsyncThunk('post/tours', async (payload) => {
     const arr = []
     arr.push(payload.RoleIds)
     const formData = new FormData();
+    Array.from(payload.img_src).forEach((file, index) => {
+        formData.append(`img_src`, file);
+      });
     formData.append('type_id', payload.id);
-    formData.append('img_src', payload.img_src);
+    // formData.append('img_src', payload.img_src);
     formData.append('type', payload.type);
     const response = await axios.post(API_HOTEL_IMGS, formData, {
         headers: {
@@ -850,6 +859,25 @@ export const PostHotelImg = createAsyncThunk('post/tours', async (payload) => {
 // ==========================================
 export const GetHistory = createAsyncThunk('get/hotel', async (payload) => {
     const response = await axios.get(API_HISTORY_TOUR + '?ItemsPerPage=100', {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            "Authorization": `Bearer ${payload.token}`
+        }
+    })
+    console.log("respone", response)
+    return response.data
+})
+export const PutHistory  = createAsyncThunk('post/tours', async (payload) => {
+
+    const formData = new FormData();
+    formData.append('id_tour', payload.id_tour);
+    formData.append('name_register', payload.name_register);
+    formData.append('address_register', payload.address_register);
+    formData.append('phone_register', payload.phone_register);
+    formData.append('email_register', payload.email_register);
+    formData.append('status', payload.status);
+    formData.append('payment_method', "Tiền mặt");
+    const response = await axios.put(API_CONFIRM+`${payload.id}`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
             "Authorization": `Bearer ${payload.token}`
