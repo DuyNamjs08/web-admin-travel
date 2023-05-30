@@ -7,6 +7,7 @@ import {
   GetAddress,
   DeleteTour,
   PostTours,
+  PostTourImg
 } from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
@@ -47,6 +48,7 @@ function Tour(props) {
     note: "",
     isurance: "",
     tour_guide: "",
+    listImg: "",
   });
   // =======================================
   const columns = [
@@ -148,15 +150,16 @@ function Tour(props) {
       !valueSend.policy ||
       !valueSend.price ||
       !valueSend.schedule ||
-      !valueSend.url||
-      !valueSend.isurance||
+      !valueSend.url ||
+      !valueSend.isurance ||
       !valueSend.tour_guide
+      // !!valueSend.listImg
     ) {
       return toast.warning("bạn cần điền đủ field");
     }
     setLoading(true);
     setEdit(!edit);
-    let slug = getSlug(value.trim());
+    // let slug = getSlug(value.trim());
     try {
       await dispatch(
         PostTours({
@@ -168,6 +171,14 @@ function Tour(props) {
         setValue("");
         setActive(!active);
       });
+      await dispatch(
+        PostTourImg({
+          id: 0,
+          img_src: valueSend.listImg,
+          type: "tour",
+          token,
+        })
+      );
     } catch (error) {
       setLoading(false);
       setActive(!active);
@@ -279,6 +290,17 @@ function Tour(props) {
                   accept="image/*"
                   onChange={(e) =>
                     setValueSend({ ...valueSend, file: e.target.files?.[0] })
+                  }
+                />
+              </div>
+              <div>
+                <h3>Chọn nhiều ảnh</h3>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) =>
+                    setValueSend({ ...valueSend, listImg: e.target.files })
                   }
                 />
               </div>

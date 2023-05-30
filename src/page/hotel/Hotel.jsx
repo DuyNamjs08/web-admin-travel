@@ -7,6 +7,7 @@ import {
   GetAddress,
   DeleteHotel,
   PostHotel,
+  PostHotelImg
 } from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
@@ -21,7 +22,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Loading from "../loading/Loading";
-
 
 function Hotel(props) {
   const dispatch = useDispatch();
@@ -39,7 +39,8 @@ function Hotel(props) {
     category_id: "",
     name: "",
     background_image: "",
-    file:''
+    file: "",
+    listImg:''
   });
   // =======================================
   const columns = [
@@ -142,6 +143,12 @@ function Hotel(props) {
     setEdit(!edit);
     // let slug = getSlug(value.trim());
     try {
+      await dispatch(PostHotelImg({
+        id: 0,
+        img_src:valueSend.listImg,
+        type:'hotel',
+        token
+      }));
       await dispatch(
         PostHotel({
           ...valueSend,
@@ -248,7 +255,21 @@ function Hotel(props) {
                   type="file"
                   accept="image/*"
                   onChange={(e) =>
-                    setValueSend({ ...valueSend, background_image: e.target.files?.[0] })
+                    setValueSend({
+                      ...valueSend,
+                      background_image: e.target.files?.[0],
+                    })
+                  }
+                />
+              </div>
+              <div>
+                <h3>Chọn nhiều ảnh</h3>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) =>
+                    setValueSend({ ...valueSend, listImg: e.target.files })
                   }
                 />
               </div>
@@ -284,5 +305,3 @@ const Container = styled.div`
 `;
 
 export default Hotel;
-
-;

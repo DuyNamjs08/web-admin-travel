@@ -8,7 +8,12 @@ import TruncatedText from "../../components/truncated-text/TruncatedText";
 import React, { useState, useEffect } from "react";
 import CustomGrid from "../../components/grid/CustomGrid";
 import { Link } from "react-router-dom";
-import { Getblog, DeleteBlog, PostBlog } from "../../redux/authSlice";
+import {
+  Getblog,
+  DeleteBlog,
+  PostBlog,
+  PostBlogImg,
+} from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -37,6 +42,7 @@ function Posts(props) {
     title: "",
     img_src: "tour",
     contents: "",
+    listImg:''
   });
 
   const handleGetdata = async () => {
@@ -71,17 +77,21 @@ function Posts(props) {
     setEdit(!edit);
   };
   const handleSubmit = async () => {
-    if (
-      !valueSend.title ||
-      !valueSend.img_src ||
-      !valueSend.contents
-    ) {
+    if (!valueSend.title || !valueSend.img_src || !valueSend.contents) {
       return toast.warning("bạn cần điền đủ field");
     }
     setLoading(true);
     setEdit(!edit);
     // let slug = getSlug(value.trim());
     try {
+      await dispatch(
+        PostBlogImg({
+          id: 0,
+          img_src: valueSend.listImg,
+          type: "blog",
+          token,
+        })
+      );
       await dispatch(
         PostBlog({
           ...valueSend,
@@ -217,6 +227,20 @@ function Posts(props) {
                     setValueSend({
                       ...valueSend,
                       img_src: e.target.files?.[0],
+                    })
+                  }
+                />
+              </div>
+              <div>
+                <h3>Chọn nhiều ảnh</h3>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) =>
+                    setValueSend({
+                      ...valueSend,
+                      listImg: e.target.files,
                     })
                   }
                 />
